@@ -8,14 +8,19 @@ app = gp.GooeyPieApp('Cálculo de Tasas')
 tasa_baja = gp.Label(app, "Cual es la tasa regular? ")
 tasa_baja_inp = gp.Input(app)
 
+
 tasa_alta =  gp.Label(app, "Cual es la tasa alta? ")
 tasa_alta_inp = gp.Input(app)
+
 
 remeza_dol = gp.Label(app, "Cual es la remeza en dolares? ")
 remeza_dol_inp = gp.Input(app)
 
+
+
 remeza_pesos = gp.Label(app, " O Cual es la remeza en pesos? ")
 remeza_pesos_inp = gp.Input(app)
+
 
 
 tr = gp.Checkbox(app, "Tasa Regular")
@@ -26,6 +31,10 @@ submit_btn = gp.Button(app, "Someter", None)
 clear_btn = gp.Button(app, "Limpiar", None)
 result_lbl =gp.Label(app,"Resultado: ")
 result_txt_box = gp.Textbox(app)
+
+class Store_val:
+    def __init__(self, val):
+        self.val = val
 
 def just_one_checked_box(event):
     if tr.checked:
@@ -54,75 +63,90 @@ def round_up(val, mult=False):
         return(round(total * 1.05, 2))
     return total
 
+def format_output(total):
+    total = float(total)
+    return f"{total:,.2f}"
+
 def print_error():
     result_txt_box.clear()
     result_txt_box.append("Hubo un error en los datos de entrada. Asegúrrese de ingresarlos correctamente.")
 
 def tasa_calc(event):
-    all_input = tasa_baja_inp.text + tasa_alta_inp.text + remeza_dol_inp.text + remeza_pesos_inp.text
+    tasa_baja_val = Store_val(tasa_baja_inp.text)
+    tasa_alta_val = Store_val(tasa_alta_inp.text)
+    remeza_dol_val = Store_val(remeza_dol_inp.text)
+    remeza_pesos_val = Store_val(remeza_pesos_inp.text)
+    
+    all_input = ""
+    inps = [tasa_alta_val, tasa_baja_val, remeza_dol_val, remeza_pesos_val]
+    for element in inps:
+        element.val = element.val.replace(',','')
+        all_input += element.val
     all_input = all_input.replace('.', '')
+
     if not all_input.isnumeric():
         print_error()
         return
-    result_txt_box.clear()
-    if tr.checked and tasa_baja_inp.text != "":
-        if  remeza_dol_inp.text != "" and remeza_pesos_inp.text == "":
-            product = float(tasa_baja_inp.text) * float(remeza_dol_inp.text)
-            result_txt_box.append("Total Para Recibir: RD$ " + str(product) + "\n")
-            remezas_output = float(remeza_dol_inp.text)
-            if float(remeza_dol_inp.text) < 500:
-                result_txt_box.append("Pago Total: USD$ " + str(remezas_output + 2))
-            elif float(remeza_dol_inp.text) < 1000:
-                result_txt_box.append("Pago Total: USD$ " + str(remezas_output + 5))
-            else:
-                result_txt_box.append("Pago Total: USD$ " + str(remezas_output + 10))
-
-        elif remeza_dol_inp.text == "" and remeza_pesos_inp.text != "":
-            quotient = float(remeza_pesos_inp.text) / float(tasa_baja_inp.text)
-            total = round_up(quotient)
-            result_txt_box.append("Total Para Recibir: RD$ " + remeza_pesos_inp.text + "\n")
-            if total < 500:
-                result_txt_box.append("Pago Total: USD$ " + str(total + 2))
-            elif total < 1000:
-                result_txt_box.append("Pago Total: USD$ " + str(total + 5))
-            else:
-                result_txt_box.append("Pago Total: USD$ " + str(total + 10))
     
-    elif st.checked and tasa_alta_inp.text != "":
-        if  remeza_dol_inp.text != "" and remeza_pesos_inp.text == "":
-            product = round(float(tasa_alta_inp.text) * float(remeza_dol_inp.text),2)
-            result_txt_box.append("Total Para Recibir: RD$ " + str(product) + "\n")
-            remezas_output = float(remeza_dol_inp.text)
-            if float(remeza_dol_inp.text) < 100:
+    result_txt_box.clear()
+    if tr.checked and tasa_baja_val.val != "":
+        if  remeza_dol_val.val != "" and remeza_pesos_val.val == "":
+            product = float(tasa_baja_val.val) * float(remeza_dol_val.val)
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(product) + "\n")
+            remezas_output = float(remeza_dol_val.val)
+            if float(remeza_dol_val.val) < 500:
+                result_txt_box.append("Pago Total: USD$ " + format_output(remezas_output + 2))
+            elif float(remeza_dol_val.val) < 1000:
+                result_txt_box.append("Pago Total: USD$ " + format_output(remezas_output + 5))
+            else:
+                result_txt_box.append("Pago Total: USD$ " + format_output(remezas_output + 10))
+
+        elif remeza_dol_val.val == "" and remeza_pesos_val.val != "":
+            quotient = float(remeza_pesos_val.val) / float(tasa_baja_val.val)
+            total = round_up(quotient)
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remeza_pesos_val.val) + "\n")
+            if total < 500:
+                result_txt_box.append("Pago Total: USD$ " + format_output(total + 2))
+            elif total < 1000:
+                result_txt_box.append("Pago Total: USD$ " + format_output(total + 5))
+            else:
+                result_txt_box.append("Pago Total: USD$ " + format_output(total + 10))
+    
+    elif st.checked and tasa_alta_val.val != "":
+        if  remeza_dol_val.val != "" and remeza_pesos_val.val == "":
+            product = round(float(tasa_alta_val.val) * float(remeza_dol_val.val),2)
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(product) + "\n")
+            remezas_output = float(remeza_dol_val.val)
+            if float(remeza_dol_val.val) < 100:
                 total = round_up(remezas_output)
-                result_txt_box.append("Pago Total USD$ " + str(total + 5))
+                result_txt_box.append("Pago Total USD$ " + format_output(total + 5))
             else:
                 total = round_up(remezas_output, True)
-                result_txt_box.append("Pago Total USD$ " + str(total))
+                result_txt_box.append("Pago Total USD$ " + format_output(total))
 
-        elif remeza_dol_inp.text == "" and remeza_pesos_inp.text != "":
-            quotient = float(remeza_pesos_inp.text) / float(tasa_alta_inp.text)
+        elif remeza_dol_val.val == "" and remeza_pesos_val.val != "":
+            quotient = float(remeza_pesos_val.val) / float(tasa_alta_val.val)
             total = round_up(quotient)
-            result_txt_box.append("Total Para Recibir: RD$ " + remeza_pesos_inp.text + "\n")
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remeza_pesos_val.val) + "\n")
             if quotient < 100:
-                result_txt_box.append("Pago Total USD$ " + str(total+5))
+                result_txt_box.append("Pago Total USD$ " + format_output(total+5))
             else:
                 total = round_up(quotient, True)
-                result_txt_box.append("Pago Total USD$ " + str(total))
+                result_txt_box.append("Pago Total USD$ " + format_output(total))
     
-    if td.checked and remeza_dol_inp.text != "" and remeza_pesos_inp.text == "":
-        remeza_dol = float(remeza_dol_inp.text)
+    if td.checked and remeza_dol_val.val != "" and remeza_pesos_val.val == "":
+        remeza_dol = float(remeza_dol_val.val)
         if remeza_dol < 20:
-            result_txt_box.append("Envio de dinero es muy bajo. Tienen que enviar 20 dolares o mas.\n")
+            result_txt_box.append("Envío de dinero es muy bajo. El mínimo para enviar es 20 dólares.\n")
             return
-        result_txt_box.append("Remeza Para Recibir USD$ " + str(remeza_dol) + "\n")
+        result_txt_box.append("Remeza Para Recibir USD$ " + format_output(remeza_dol) + "\n")
         if remeza_dol <= 50:
-            result_txt_box.append("Pago Total USD$ " + str(remeza_dol + 5))
+            result_txt_box.append("Pago Total USD$ " + format_output(remeza_dol + 5))
         elif remeza_dol <= 100:
-            result_txt_box.append("Pago Total USD$ " + str(remeza_dol + 6))
+            result_txt_box.append("Pago Total USD$ " + format_output(remeza_dol + 6))
         else:
             total = remeza_dol * 1.03 + 5
-            result_txt_box.append("Pago Total USD$ " + str(total))
+            result_txt_box.append("Pago Total USD$ " + format_output(total))
 
     if result_txt_box.text == "":
         print_error()
