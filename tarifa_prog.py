@@ -89,10 +89,10 @@ def tasa_calc(event):
     for element in inps:
         element.val = element.val.replace(',','')
         if element.val:
-            if not element.val.isnumeric():
+            element.val = float(element.val)
+            if not isinstance(element.val, float):
                 print_error()
                 return
-            element.val = float(element.val)
 
     
     result_txt_box.clear()
@@ -157,6 +157,7 @@ def tasa_calc(event):
 
     if result_txt_box.text == "":
         print_error()
+        return
 
 def clear_rmt(event):
     remeza_pesos_inp.clear()
