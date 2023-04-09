@@ -119,20 +119,20 @@ def tasa_calc(event):
             remezas_output = float(remeza_dol_val.val)
             if float(remeza_dol_val.val) < 100:
                 total = round_up(remezas_output)
-                result_txt_box.append("Pago Total USD$ " + format_output(total + 5))
+                result_txt_box.append("Pago Total: USD$ " + format_output(total + 5))
             else:
                 total = round_up(remezas_output, True)
-                result_txt_box.append("Pago Total USD$ " + format_output(total))
+                result_txt_box.append("Pago Total: USD$ " + format_output(total))
 
         elif remeza_dol_val.val == "" and remeza_pesos_val.val != "":
             quotient = float(remeza_pesos_val.val) / float(tasa_alta_val.val)
             total = round_up(quotient)
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(remeza_pesos_val.val) + "\n")
             if quotient < 100:
-                result_txt_box.append("Pago Total USD$ " + format_output(total+5))
+                result_txt_box.append("Pago Total: USD$ " + format_output(total+5))
             else:
                 total = round_up(quotient, True)
-                result_txt_box.append("Pago Total USD$ " + format_output(total))
+                result_txt_box.append("Pago Total: USD$ " + format_output(total))
     
     if td.checked and remeza_dol_val.val != "" and remeza_pesos_val.val == "":
         remeza_dol = float(remeza_dol_val.val)
@@ -141,12 +141,12 @@ def tasa_calc(event):
             return
         result_txt_box.append("Remeza Para Recibir USD$ " + format_output(remeza_dol) + "\n")
         if remeza_dol <= 50:
-            result_txt_box.append("Pago Total USD$ " + format_output(remeza_dol + 5))
+            result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol + 5))
         elif remeza_dol <= 100:
-            result_txt_box.append("Pago Total USD$ " + format_output(remeza_dol + 6))
+            result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol + 6))
         else:
             total = remeza_dol * 1.03 + 5
-            result_txt_box.append("Pago Total USD$ " + format_output(total))
+            result_txt_box.append("Pago Total: USD$ " + format_output(total))
 
     if result_txt_box.text == "":
         print_error()
