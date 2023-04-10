@@ -5,20 +5,20 @@ from math import ceil
 app = gp.GooeyPieApp('Cálculo de Tasas')
 
 
-tasa_regular = gp.Label(app, "Cual es la tasa regular? ")
+tasa_regular = gp.Label(app, "Cual es la Tasa Regular? ")
 tasa_regular_inp = gp.Input(app)
 
 
-super_tasa =  gp.Label(app, "Cual es la tasa alta? ")
+super_tasa =  gp.Label(app, "Cual es la Super Tasa? ")
 super_tasa_inp = gp.Input(app)
 
 
-remeza_dol = gp.Label(app, "Cual es la remeza en dolares? ")
-remeza_dol_inp = gp.Input(app)
+remesa_dol = gp.Label(app, "Cual es la Remesa en Dolares? ")
+remesa_dol_inp = gp.Input(app)
 
 
-remeza_pesos = gp.Label(app, "O Cual es la remeza en pesos? ")
-remeza_pesos_inp = gp.Input(app)
+remesa_pesos = gp.Label(app, "O Cual es la Remesa en Pesos? ")
+remesa_pesos_inp = gp.Input(app)
 
 ajuste_lbl = gp.Label(app, "Ajuste de Tarifa:")
 ajuste_inp = gp.Input(app)
@@ -28,9 +28,9 @@ tr = gp.Checkbox(app, "Tasa Regular")
 st = gp.Checkbox(app, "Super Tasa")
 td = gp.Checkbox(app, "Tasa del Dólar")
 
-submit_btn = gp.Button(app, "Someter", None)
+submit_btn = gp.Button(app, "Ingresar", None)
 submit_btn.width = 10
-clear_rmt_btn = gp.Button(app, "Limpiar Remeza", None)
+clear_rmt_btn = gp.Button(app, "Limpiar Remesa", None)
 clear_all_btn = gp.Button(app, "Limpiar Todo", None)
 result_lbl =gp.Label(app,"Resultado: ")
 result_txt_box = gp.Textbox(app)
@@ -76,14 +76,14 @@ def print_error():
 def tasa_calc(event):
     tasa_regular_val = Store_val(tasa_regular_inp.text)
     super_tasa_val = Store_val(super_tasa_inp.text)
-    remeza_dol_val = Store_val(remeza_dol_inp.text)
-    remeza_pesos_val = Store_val(remeza_pesos_inp.text)
+    remesa_dol_val = Store_val(remesa_dol_inp.text)
+    remesa_pesos_val = Store_val(remesa_pesos_inp.text)
     ajuste_val = Store_val(ajuste_inp.text)
     if ajuste_val.val == "": 
         ajuste_val.val = "0"
         ajuste_inp.text = "0"
     
-    inps = [super_tasa_val, tasa_regular_val, remeza_dol_val, remeza_pesos_val, ajuste_val]
+    inps = [super_tasa_val, tasa_regular_val, remesa_dol_val, remesa_pesos_val, ajuste_val]
     for element in inps:
         element.val = element.val.replace(',','')
         if element.val:
@@ -96,20 +96,20 @@ def tasa_calc(event):
     
     result_txt_box.clear()
     if tr.checked and tasa_regular_val.val != "":
-        if  remeza_dol_val.val != "" and remeza_pesos_val.val == "":
-            product = tasa_regular_val.val * remeza_dol_val.val
+        if  remesa_dol_val.val != "" and remesa_pesos_val.val == "":
+            product = tasa_regular_val.val * remesa_dol_val.val
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(product) + "\n")
-            if remeza_dol_val.val < 500:
-                result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol_val.val + 2 + ajuste_val.val))
-            elif remeza_dol_val.val < 1000:
-                result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol_val.val + 5 + ajuste_val.val))
+            if remesa_dol_val.val < 500:
+                result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 2 + ajuste_val.val))
+            elif remesa_dol_val.val < 1000:
+                result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 5 + ajuste_val.val))
             else:
-                result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol_val.val + 10 + ajuste_val.val))
+                result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 10 + ajuste_val.val))
 
-        elif remeza_dol_val.val == "" and remeza_pesos_val.val != "":
-            quotient = remeza_pesos_val.val / tasa_regular_val.val
+        elif remesa_dol_val.val == "" and remesa_pesos_val.val != "":
+            quotient = remesa_pesos_val.val / tasa_regular_val.val
             total = round_up(quotient)
-            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remeza_pesos_val.val) + "\n")
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remesa_pesos_val.val) + "\n")
             if total < 500:
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + 2 + ajuste_val.val))
             elif total < 1000:
@@ -118,40 +118,40 @@ def tasa_calc(event):
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + 10 + ajuste_val.val))
     
     elif st.checked and super_tasa_val.val != "":
-        if  remeza_dol_val.val != "" and remeza_pesos_val.val == "":
-            product = round_up(super_tasa_val.val * remeza_dol_val.val)
+        if  remesa_dol_val.val != "" and remesa_pesos_val.val == "":
+            product = round_up(super_tasa_val.val * remesa_dol_val.val)
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(product) + "\n")
-            if remeza_dol_val.val < 100:
-                total = round_up(remeza_dol_val.val)
+            if remesa_dol_val.val < 100:
+                total = round_up(remesa_dol_val.val)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + 5 + ajuste_val.val))
             else:
-                total = round_up(remeza_dol_val.val, True)
+                total = round_up(remesa_dol_val.val, True)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
 
-        elif remeza_dol_val.val == "" and remeza_pesos_val.val != "":
-            quotient = remeza_pesos_val.val / super_tasa_val.val
+        elif remesa_dol_val.val == "" and remesa_pesos_val.val != "":
+            quotient = remesa_pesos_val.val / super_tasa_val.val
             total = round_up(quotient)
-            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remeza_pesos_val.val) + "\n")
+            result_txt_box.append("Total Para Recibir: RD$ " + format_output(remesa_pesos_val.val) + "\n")
             if quotient < 100:
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + 5 + ajuste_val.val))
             else:
                 total = round_up(quotient, True)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
     
-    if td.checked and remeza_dol_val.val != "" and remeza_pesos_val.val == "":
-        remeza_dol = remeza_dol_val.val
-        if remeza_dol < 20:
+    if td.checked and remesa_dol_val.val != "" and remesa_pesos_val.val == "":
+        remesa_dol = remesa_dol_val.val
+        if remesa_dol < 20:
             result_txt_box.append("Envío de dinero es muy bajo. El mínimo para enviar es 20 dólares.\n")
             return
-        result_txt_box.append("Remeza Para Recibir USD$ " + format_output(remeza_dol) + "\n")
-        if remeza_dol <= 50:
-            print(type(remeza_dol))
+        result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(remesa_dol) + "\n")
+        if remesa_dol <= 50:
+            print(type(remesa_dol))
             print(type(ajuste_val.val))
-            result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol + 5 + ajuste_val.val))
-        elif remeza_dol <= 100:
-            result_txt_box.append("Pago Total: USD$ " + format_output(remeza_dol + 6 + ajuste_val.val))
+            result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol + 5 + ajuste_val.val))
+        elif remesa_dol <= 100:
+            result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol + 6 + ajuste_val.val))
         else:
-            total = remeza_dol * 1.03 + 5
+            total = remesa_dol * 1.03 + 5
             result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
 
     if result_txt_box.text == "":
@@ -159,8 +159,8 @@ def tasa_calc(event):
         return
 
 def clear_rmt(event):
-    remeza_pesos_inp.clear()
-    remeza_dol_inp.clear()
+    remesa_pesos_inp.clear()
+    remesa_dol_inp.clear()
     tr.checked = False
     st.checked = False
     td.checked = False
@@ -181,12 +181,12 @@ app.set_grid(8,3)
 app.set_row_weights(1,1,1,1,1,1,1,1)
 app.set_column_weights(1,1,1)
 app.add(tasa_regular, 1,1, align='left')
-app.add(remeza_dol, 1,2, align='center')
-app.add(remeza_pesos, 3,2, align='center')
-app.add(remeza_pesos_inp, 4,2, align='center')
+app.add(remesa_dol, 1,2, align='center')
+app.add(remesa_pesos, 3,2, align='center')
+app.add(remesa_pesos_inp, 4,2, align='center')
 app.add(tr, 1,3)
 app.add(tasa_regular_inp, 2,1, align='left')
-app.add(remeza_dol_inp, 2,2, align='center')
+app.add(remesa_dol_inp, 2,2, align='center')
 app.add(st, 2,3)
 app.add(super_tasa, 3,1, align='left')
 app.add(td, 3,3)
