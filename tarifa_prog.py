@@ -151,8 +151,6 @@ def tasa_calc(event):
             return
         result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(remesa_dol_val.val) + "\n")
         if remesa_dol_val.val <= 50:
-            print(type(remesa_dol))
-            print(type(ajuste_val.val))
             result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 5 + ajuste_val.val))
         elif remesa_dol_val.val <= 100:
             result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 6 + ajuste_val.val))
