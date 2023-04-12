@@ -20,7 +20,7 @@ remesa_dol_inp = gp.Input(app)
 remesa_pesos = gp.Label(app, "O Cual es la Remesa en Pesos? ")
 remesa_pesos_inp = gp.Input(app)
 
-pago_total = gp.Label(app, "O Cual es el Pago Total que Desea el Cliente? ")
+pago_total = gp.Label(app, "O Cual es el Pago Total que \n          Desea el Cliente? ")
 pago_total_inp = gp.Input(app)
 
 ajuste_lbl = gp.Label(app, "Ajuste de Tarifa:")
@@ -126,13 +126,13 @@ def tasa_calc(event):
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val < 502 + ajuste_val.val:
                 rmt = pago_total_val.val - 2 - ajuste_val.val
-                result_txt_box.append("Monto: USD$ " + format_output(rmt))
-            elif remesa_dol_val.val < 1005 + ajuste_val.val:
+                result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
+            elif pago_total_val.val < 1005 + ajuste_val.val:
                 rmt = pago_total_val.val - 5 - ajuste_val.val
-                result_txt_box.append("Monto: USD$ " + format_output(rmt))
+                result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
                 rmt = pago_total_val.val - 10 - ajuste_val.val
-                result_txt_box.append("Monto: USD$ " + format_output(rmt))
+                result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             product = tasa_regular_val.val * rmt
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(product) + "\n")
             result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
@@ -164,10 +164,10 @@ def tasa_calc(event):
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val < 105 + ajuste_val.val:
                 rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
-                result_txt_box.append("Monto: USD$ " + format_output(rmt))
+                result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
-                rmt = round_up(pago_total_val.val * 0.95238)
-                result_txt_box.append("Monto: USD$ " + format_output(rmt))
+                rmt = round_up(pago_total_val.val * 0.95240) - ajuste_val.val
+                result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(rmt * super_tasa_val.val) + "\n")
             result_txt_box.append("Pago Total: RD$ " + format_output(pago_total_val.val))
     
@@ -200,8 +200,10 @@ def tasa_calc(event):
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
             else:
-                total = remesa_dol_val.val * 1.03 + 5
-                result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
+                rmt = (pago_total_val.val - 5) * 0.970874 - ajuste_val.val
+                result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
+                result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
+                result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
 
     if result_txt_box.text == "":
         print_error()
@@ -240,11 +242,13 @@ app.add(st, 2,3)
 app.add(super_tasa, 3,1, align='left')
 app.add(td, 3,3)
 app.add(submit_btn, 7,2, align='center', fill=True, stretch=True, row_span=2)
-app.add(clear_rmt_btn, 7,3, fill=True)
-app.add(clear_all_btn, 8,3, fill=True)
+app.add(clear_rmt_btn, 4,3, fill=True)
+app.add(clear_all_btn, 5,3, fill=True)
 app.add(super_tasa_inp, 4,1, align='left')
-app.add(ajuste_lbl,5,1, align='left')
-app.add(ajuste_inp,6,1,align='left')
+app.add(ajuste_lbl,6,1, align='left')
+app.add(pago_total, 5, 2, align='center')
+app.add(pago_total_inp, 6, 2, align='center')
+app.add(ajuste_inp,7,1,align='left')
 app.add(result_lbl, 8,1, align='left')
 app.add(result_txt_box, 9,1, align='center',column_span=3, fill="True")
 
