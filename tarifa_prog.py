@@ -166,7 +166,7 @@ def tasa_calc(event):
                 rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
-                rmt = round_up(pago_total_val.val * 0.95240) - ajuste_val.val
+                rmt = pago_total_val.val * (100 / 105) - ajuste_val.val
                 result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             result_txt_box.append("Total Para Recibir: RD$ " + format_output(rmt * super_tasa_val.val) + "\n")
             result_txt_box.append("Pago Total: RD$ " + format_output(pago_total_val.val))
@@ -200,7 +200,7 @@ def tasa_calc(event):
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
             else:
-                rmt = (pago_total_val.val - 5) * 0.970874 - ajuste_val.val
+                rmt = (pago_total_val.val - 5) * (100 /103) - ajuste_val.val
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
