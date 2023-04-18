@@ -1,5 +1,5 @@
 import gooeypie as gp
-from math import ceil, floor
+from math import ceil
 
 
 app = gp.GooeyPieApp('Cálculo de Tasas')
@@ -59,7 +59,6 @@ def just_one_checked_box(event):
         tr.disabled = False
         st.disabled = False
         td.disabled = False
-    
 
 def round_up(val, mult=False):
     total = val * 100
@@ -67,12 +66,6 @@ def round_up(val, mult=False):
     total = total / 100
     if mult:
         return(round_up(total * 1.05)) #recursive call
-    return total
-
-def round_down(val):
-    total = val * 100
-    total = floor(total)
-    total = total / 100
     return total
 
 def format_output(total):
