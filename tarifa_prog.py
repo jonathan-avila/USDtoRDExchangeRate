@@ -213,6 +213,7 @@ def tasa_calc(event):
         return
 
 def clear_rmt(event):
+    ajuste_inp.text = "0"
     remesa_dol_inp.clear()
     remesa_pesos_inp.clear()
     pago_total_inp.clear()
@@ -228,7 +229,6 @@ def clear_rmt(event):
 def clear_all(event):
     tasa_regular_inp.clear()
     super_tasa_inp.clear()
-    ajuste_inp.text = "0"
     clear_rmt(event)
 
 
