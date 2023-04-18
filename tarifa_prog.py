@@ -25,6 +25,8 @@ pago_total_inp = gp.Input(app)
 
 ajuste_lbl = gp.Label(app, "Ajuste de Tarifa:")
 ajuste_inp = gp.Input(app)
+if ajuste_inp.text == "":
+    ajuste_inp.text = "0"
 
 
 tr = gp.Checkbox(app, "Tasa Regular")
@@ -76,15 +78,15 @@ def print_error():
     result_txt_box.append("HUBO UN ERROR EN LOS DATOS DE ENTRADA. ASEGÚRESE DE INGRESARLOS CORRECTAMENTE.")
 
 def tasa_calc(event):
+    if ajuste_inp.text == "":
+        ajuste_inp.text = "0"
+    
     tasa_regular_val = Store_val(tasa_regular_inp.text)
     super_tasa_val = Store_val(super_tasa_inp.text)
     remesa_dol_val = Store_val(remesa_dol_inp.text)
     remesa_pesos_val = Store_val(remesa_pesos_inp.text)
     pago_total_val = Store_val(pago_total_inp.text)
     ajuste_val = Store_val(ajuste_inp.text)
-    if ajuste_val.val == "": 
-        ajuste_val.val = "0"
-        ajuste_inp.text = "0"
     
     inps = [super_tasa_val, tasa_regular_val, remesa_dol_val, remesa_pesos_val, pago_total_val, ajuste_val]
     for element in inps:
