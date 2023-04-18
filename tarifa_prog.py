@@ -92,7 +92,7 @@ def tasa_calc(event):
     for element in inps:
         element.val = element.val.replace(',','')
         if element.val:
-            if element.val.replace('.','').isnumeric():
+            if element.val.replace('.','').replace('-','').isnumeric():
                 element.val = float(element.val)
             else:
                 print_error()
