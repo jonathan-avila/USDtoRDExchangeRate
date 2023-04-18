@@ -213,6 +213,7 @@ def tasa_calc(event):
 def clear_rmt(event):
     remesa_pesos_inp.clear()
     remesa_dol_inp.clear()
+    pago_total_inp.clear()
     tr.checked = False
     st.checked = False
     td.checked = False
