@@ -126,7 +126,7 @@ def tasa_calc(event):
                 result_txt_box.append("Pago Total: USD$ " + format_output((quotient * 1.01) + ajuste_val.val))
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val <= 502 + ajuste_val.val:
-                rmt = pago_total_val.val - 2 - ajuste_val.val
+                rmt = round_up(pago_total_val.val - 2 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
             elif pago_total_val.val <= 1005 + ajuste_val.val:
                 rmt = round((pago_total_val.val - ajuste_val.val) / 1.005, 2)
@@ -191,12 +191,12 @@ def tasa_calc(event):
                 result_txt_box.append("Envío de dinero es muy bajo. El mínimo para enviar es 20 dólares.\n")
                 return
             if pago_total_val.val <= 55 + ajuste_val.val:
-                rmt = pago_total_val.val - 5 - ajuste_val.val
+                rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
             elif pago_total_val.val <= 106 + ajuste_val.val:
-                rmt = pago_total_val.val - 6 - ajuste_val.val
+                rmt = round_up(pago_total_val.val - 6 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
