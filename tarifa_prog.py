@@ -110,7 +110,7 @@ def tasa_calc(event):
             elif remesa_dol_val.val <= 1000:
                 result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 5 + ajuste_val.val))
             else:
-                result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 10 + ajuste_val.val))
+                result_txt_box.append("Pago Total: USD$ " + format_output((remesa_dol_val.val * 1.01) + ajuste_val.val))
 
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text != "" and pago_total_inp.text == "":
             quotient = remesa_pesos_val.val / tasa_regular_val.val
@@ -123,7 +123,7 @@ def tasa_calc(event):
             elif quotient <= 1000:
                 result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 5 + ajuste_val.val))
             else:
-                result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 10 + ajuste_val.val))
+                result_txt_box.append("Pago Total: USD$ " + format_output((quotient * 1.01) + ajuste_val.val))
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val <= 502 + ajuste_val.val:
                 rmt = pago_total_val.val - 2 - ajuste_val.val
@@ -132,7 +132,7 @@ def tasa_calc(event):
                 rmt = pago_total_val.val - 5 - ajuste_val.val
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
-                rmt = pago_total_val.val - 10 - ajuste_val.val
+                rmt = (pago_total_val.val - ajuste_val.val) / 1.01
                 result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             product = tasa_regular_val.val * rmt
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
@@ -167,8 +167,7 @@ def tasa_calc(event):
                 rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
-                reverse_tarifa =  105 / 100
-                rmt = round((pago_total_val.val - ajuste_val.val) / (reverse_tarifa), 2)
+                rmt = round(((pago_total_val.val - ajuste_val.val) / 1.05), 2)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(rmt * super_tasa_val.val) + "\n")
             result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
@@ -202,8 +201,7 @@ def tasa_calc(event):
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
             else:
-                reverse_tarifa =  103 / 100
-                rmt = round((pago_total_val.val - ajuste_val.val - 5) / (reverse_tarifa), 2)
+                rmt = round(((pago_total_val.val - ajuste_val.val - 5) / 1.03), 2)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
