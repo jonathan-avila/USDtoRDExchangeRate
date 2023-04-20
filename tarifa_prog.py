@@ -108,7 +108,7 @@ def tasa_calc(event):
             if remesa_dol_val.val <= 500:
                 result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 2 + ajuste_val.val))
             elif remesa_dol_val.val <= 1000:
-                result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 5 + ajuste_val.val))
+                result_txt_box.append("Pago Total: USD$ " + format_output((remesa_dol_val.val * 1.005 ) + ajuste_val.val))
             else:
                 result_txt_box.append("Pago Total: USD$ " + format_output((remesa_dol_val.val * 1.01) + ajuste_val.val))
 
@@ -121,7 +121,7 @@ def tasa_calc(event):
             if quotient <= 500:
                 result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 2 + ajuste_val.val))
             elif quotient <= 1000:
-                result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 5 + ajuste_val.val))
+                result_txt_box.append("Pago Total: USD$ " + format_output((quotient * 1.005) + ajuste_val.val))
             else:
                 result_txt_box.append("Pago Total: USD$ " + format_output((quotient * 1.01) + ajuste_val.val))
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
@@ -129,10 +129,10 @@ def tasa_calc(event):
                 rmt = pago_total_val.val - 2 - ajuste_val.val
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
             elif pago_total_val.val <= 1005 + ajuste_val.val:
-                rmt = pago_total_val.val - 5 - ajuste_val.val
+                rmt = round((pago_total_val.val - ajuste_val.val) / 1.005, 2)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
-                rmt = (pago_total_val.val - ajuste_val.val) / 1.01
+                rmt = round((pago_total_val.val - ajuste_val.val) / 1.01, 2)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt)  + '\n')
             product = tasa_regular_val.val * rmt
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
