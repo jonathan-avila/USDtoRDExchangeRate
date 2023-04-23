@@ -1,5 +1,4 @@
 import gooeypie as gp
-from math import ceil
 from tkinter import Tk
 
 rmt = None
@@ -65,12 +64,12 @@ def just_one_checked_box(event):
         st.disabled = False
         td.disabled = False
 
-def round_up(val, mult=False):
+def decimal_round(val, mult=False):
     total = val * 100
-    total = ceil(total)
+    total = round(total)
     total = total / 100
     if mult:
-        return(round_up(total * 1.05)) #recursive call
+        return(decimal_round(total * 1.05)) #recursive call
     return total
 
 def format_output(total):
@@ -119,7 +118,7 @@ def tasa_calc(event):
 
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text != "" and pago_total_inp.text == "":
             quotient = remesa_pesos_val.val / tasa_regular_val.val
-            quotient = round_up(quotient)
+            quotient = decimal_round(quotient)
             enhanced_accuracy_val_pesos = quotient * tasa_regular_val.val
             rmt = quotient
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
@@ -132,7 +131,7 @@ def tasa_calc(event):
                 result_txt_box.append("Pago Total: USD$ " + format_output((quotient * 1.01) + ajuste_val.val))
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val <= 502 + ajuste_val.val:
-                rmt = round_up(pago_total_val.val - 2 - ajuste_val.val)
+                rmt = decimal_round(pago_total_val.val - 2 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
             elif pago_total_val.val <= 1005 + ajuste_val.val:
                 rmt = round((pago_total_val.val - ajuste_val.val) / 1.005, 2)
@@ -149,18 +148,18 @@ def tasa_calc(event):
         if  remesa_dol_inp.text != "" and remesa_pesos_inp.text == "" and pago_total_inp.text == "":
             rmt = remesa_dol_val.val
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
-            product = round_up(super_tasa_val.val * remesa_dol_val.val)
+            product = decimal_round(super_tasa_val.val * remesa_dol_val.val)
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
             if remesa_dol_val.val <= 100:
-                total = round_up(remesa_dol_val.val)
+                total = decimal_round(remesa_dol_val.val)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + 5 + ajuste_val.val))
             else:
-                total = round_up(remesa_dol_val.val, True)
+                total = decimal_round(remesa_dol_val.val, True)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
 
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text != "" and pago_total_inp.text == "":
             quotient = remesa_pesos_val.val / super_tasa_val.val
-            quotient = round_up(quotient)
+            quotient = decimal_round(quotient)
             enhanced_accuracy_val_pesos = quotient * super_tasa_val.val
             rmt = quotient
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
@@ -168,11 +167,11 @@ def tasa_calc(event):
             if quotient <= 100:
                 result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 5 + ajuste_val.val))
             else:
-                total = round_up(quotient, True)
+                total = decimal_round(quotient, True)
                 result_txt_box.append("Pago Total: USD$ " + format_output(total + ajuste_val.val))
         elif remesa_dol_inp.text == "" and remesa_pesos_inp.text == "" and pago_total_inp.text != "":
             if pago_total_val.val <= 105 + ajuste_val.val:
-                rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
+                rmt = decimal_round(pago_total_val.val - 5 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n' )
             else:
                 rmt = round(((pago_total_val.val - ajuste_val.val) / 1.05), 2)
@@ -200,12 +199,12 @@ def tasa_calc(event):
                 result_txt_box.append("Envío de dinero es muy bajo. El mínimo para enviar es 20 dólares.\n")
                 return
             if pago_total_val.val <= 55 + ajuste_val.val:
-                rmt = round_up(pago_total_val.val - 5 - ajuste_val.val)
+                rmt = decimal_round(pago_total_val.val - 5 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
             elif pago_total_val.val <= 106 + ajuste_val.val:
-                rmt = round_up(pago_total_val.val - 6 - ajuste_val.val)
+                rmt = decimal_round(pago_total_val.val - 6 - ajuste_val.val)
                 result_txt_box.append("Monto: USD$ " + format_output(rmt) + '\n')
                 result_txt_box.append("Remesa Para Recibir: USD$ " + format_output(rmt) + "\n")
                 result_txt_box.append("Pago Total: USD$ " + format_output(pago_total_val.val))
