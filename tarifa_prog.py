@@ -1,6 +1,8 @@
 import gooeypie as gp
 from math import ceil
+from tkinter import Tk
 
+rmt = None
 
 app = gp.GooeyPieApp('Cálculo de Tasas')
 
@@ -37,6 +39,7 @@ submit_btn = gp.Button(app, "Ingresar", None)
 submit_btn.width = 10
 clear_rmt_btn = gp.Button(app, "Limpiar Remesa", None)
 clear_all_btn = gp.Button(app, "Limpiar Todo", None)
+copy_monto_btn = gp.Button(app, "Copiar Monto", None)
 result_lbl =gp.Label(app,"Resultado: ")
 result_txt_box = gp.Textbox(app)
 
@@ -78,6 +81,7 @@ def print_error():
     result_txt_box.append("HUBO UN ERROR EN LOS DATOS DE ENTRADA. ASEGÚRESE DE INGRESARLOS CORRECTAMENTE.")
 
 def tasa_calc(event):
+    global rmt
     if ajuste_inp.text == "":
         ajuste_inp.text = "0"
     
@@ -102,7 +106,8 @@ def tasa_calc(event):
     result_txt_box.clear()
     if tr.checked and tasa_regular_inp.text != "":
         if  remesa_dol_inp.text != "" and remesa_pesos_inp.text == "" and pago_total_inp.text == "":
-            result_txt_box.append("Monto: USD$ " + format_output(remesa_dol_val.val) + "\n")
+            rmt = remesa_dol_val.val
+            result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             product = tasa_regular_val.val * remesa_dol_val.val
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
             if remesa_dol_val.val <= 500:
@@ -116,7 +121,8 @@ def tasa_calc(event):
             quotient = remesa_pesos_val.val / tasa_regular_val.val
             quotient = round_up(quotient)
             enhanced_accuracy_val_pesos = quotient * tasa_regular_val.val
-            result_txt_box.append("Monto: USD$ " + format_output(quotient) + "\n")
+            rmt = quotient
+            result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(enhanced_accuracy_val_pesos) + "\n")
             if quotient <= 500:
                 result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 2 + ajuste_val.val))
@@ -141,7 +147,8 @@ def tasa_calc(event):
     
     elif st.checked and super_tasa_inp.text != "":
         if  remesa_dol_inp.text != "" and remesa_pesos_inp.text == "" and pago_total_inp.text == "":
-            result_txt_box.append("Monto: USD$ " + format_output(remesa_dol_val.val) + "\n")
+            rmt = remesa_dol_val.val
+            result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             product = round_up(super_tasa_val.val * remesa_dol_val.val)
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
             if remesa_dol_val.val <= 100:
@@ -155,7 +162,8 @@ def tasa_calc(event):
             quotient = remesa_pesos_val.val / super_tasa_val.val
             quotient = round_up(quotient)
             enhanced_accuracy_val_pesos = quotient * super_tasa_val.val
-            result_txt_box.append("Monto: USD$ " + format_output(quotient) + "\n")
+            rmt = quotient
+            result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(enhanced_accuracy_val_pesos) + "\n")
             if quotient <= 100:
                 result_txt_box.append("Pago Total: USD$ " + format_output(quotient + 5 + ajuste_val.val))
@@ -174,7 +182,8 @@ def tasa_calc(event):
     
     elif td.checked and remesa_pesos_inp.text == "":
         if remesa_dol_inp.text != "" and pago_total_inp.text == "":
-            result_txt_box.append("Monto: USD$ " + format_output(remesa_dol_val.val) + "\n")
+            rmt = remesa_dol_val.val
+            result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             if remesa_dol_val.val < 20:
                 result_txt_box.append("Envío de dinero es muy bajo. El mínimo para enviar es 20 dólares.\n")
                 return
@@ -210,6 +219,8 @@ def tasa_calc(event):
         print_error()
         return
 
+    return rmt
+
 def clear_rmt(event):
     ajuste_inp.text = "0"
     remesa_dol_inp.clear()
@@ -221,6 +232,8 @@ def clear_rmt(event):
     tr.disabled = False
     st.disabled = False
     td.disabled = False
+    global rmt
+    rmt = None
     result_txt_box.clear()
 
 
@@ -228,6 +241,14 @@ def clear_all(event):
     tasa_regular_inp.clear()
     super_tasa_inp.clear()
     clear_rmt(event)
+
+def copy_monto(event):
+    r = Tk()
+    r.withdraw()
+    r.clipboard_clear()
+    r.clipboard_append(rmt)
+    r.update()
+    r.destroy()
 
 
 app.set_grid(9,3)
@@ -251,8 +272,10 @@ app.add(ajuste_lbl,6,1, align='left')
 app.add(pago_total, 5, 2, align='center')
 app.add(pago_total_inp, 6, 2, align='center')
 app.add(ajuste_inp,7,1,align='left')
+app.add(copy_monto_btn, 7,3, fill=True)
 app.add(result_lbl, 8,1, align='left')
 app.add(result_txt_box, 9,1, align='center',column_span=3, fill="True")
+
 
 tr.add_event_listener("change", just_one_checked_box)
 st.add_event_listener("change", just_one_checked_box)
@@ -260,9 +283,11 @@ td.add_event_listener("change", just_one_checked_box)
 submit_btn.add_event_listener("press", tasa_calc)
 clear_rmt_btn.add_event_listener("press", clear_rmt)
 clear_all_btn.add_event_listener("press", clear_all)
+copy_monto_btn.add_event_listener("press", copy_monto)
 
 app.width = 500
 app.length = 500
 
 
 app.run()
+
