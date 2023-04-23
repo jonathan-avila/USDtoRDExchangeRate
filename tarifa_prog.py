@@ -107,7 +107,7 @@ def tasa_calc(event):
         if  remesa_dol_inp.text != "" and remesa_pesos_inp.text == "" and pago_total_inp.text == "":
             rmt = remesa_dol_val.val
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
-            product = tasa_regular_val.val * remesa_dol_val.val
+            product = decimal_round(tasa_regular_val.val * remesa_dol_val.val)
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(product) + "\n")
             if remesa_dol_val.val <= 500:
                 result_txt_box.append("Pago Total: USD$ " + format_output(remesa_dol_val.val + 2 + ajuste_val.val))
@@ -120,6 +120,9 @@ def tasa_calc(event):
             quotient = remesa_pesos_val.val / tasa_regular_val.val
             quotient = decimal_round(quotient)
             enhanced_accuracy_val_pesos = quotient * tasa_regular_val.val
+            if enhanced_accuracy_val_pesos < remesa_pesos_val.val:
+                quotient += 0.01
+                enhanced_accuracy_val_pesos = quotient * tasa_regular_val.val
             rmt = quotient
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(enhanced_accuracy_val_pesos) + "\n")
@@ -161,6 +164,9 @@ def tasa_calc(event):
             quotient = remesa_pesos_val.val / super_tasa_val.val
             quotient = decimal_round(quotient)
             enhanced_accuracy_val_pesos = quotient * super_tasa_val.val
+            if enhanced_accuracy_val_pesos < remesa_pesos_val.val:
+                quotient += 0.01
+                enhanced_accuracy_val_pesos = quotient * super_tasa_val.val
             rmt = quotient
             result_txt_box.append("Monto: USD$ " + format_output(rmt) + "\n")
             result_txt_box.append("Remesa Para Recibir: RD$ " + format_output(enhanced_accuracy_val_pesos) + "\n")
